@@ -1,5 +1,8 @@
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 class MyHashSet {
     private LinkedList<Integer>[] table;
@@ -14,6 +17,10 @@ class MyHashSet {
     }
 
     public void add(int key) {
+        add(key, 1);
+    }
+
+    private void add(int key, int increment) {
         if (entries == tableSize) {
             adjustTableSize(tableSize * 2);
         }
@@ -23,10 +30,10 @@ class MyHashSet {
         if (head == null) {
             head = new LinkedList<>(List.of(key));
             table[resizedKey] = head;
-            entries++;
+            entries+=increment;
         } else if (!head.contains(key)){
             head.add(key);
-            entries++;
+            entries+=increment;
         }
     }
 
@@ -37,7 +44,7 @@ class MyHashSet {
 
         for (LinkedList<Integer> integers : oldTable) {
             if (integers != null) {
-                integers.forEach(this::add);
+                integers.forEach(i -> add(i, 0));
             }
         }
     }
